@@ -24,11 +24,15 @@ function ToDoList() {
   const onValid = (data: any) => {
     if (data.password !== data.password1) {
       setError(
+        // 어떤 요소에 해당되는 메세지인지
         "password1",
         { message: "Password are not the same" },
+        // 강제 포커스
         { shouldFocus: true }
       );
     }
+    // 전체 form에 대한 에러(특정 요소에 해당하지 않음)
+    // setError("extraError", {message: "extra"})
   };
   console.log(errors);
   return (
@@ -51,11 +55,12 @@ function ToDoList() {
         <input
           {...register("firstName", {
             required: "write here",
+            // 특정 값 검출해서 걸리게 할때
+            // 또한 값을 여러가지 확인 할때는 { }안에 적으면 된다
             validate: {
               noNico: (value) =>
                 value.includes("nico") ? "no nicos allowed" : true,
-              noNick: (value) =>
-                value.includes("nick") ? "no nick allowed" : true,
+              way2: (value) => !value.includes("nico") || "error message",
             },
           })}
           placeholder="First Name"
@@ -87,8 +92,8 @@ function ToDoList() {
           placeholder="Password1"
         />
         <span>{errors?.password1?.message}</span>
-        <span>{errors?.extraError?.message}</span>
         <button>Add</button>
+        <span>{errors?.extraError?.message}</span>
       </form>
     </div>
   );
